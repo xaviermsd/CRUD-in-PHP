@@ -41,7 +41,7 @@ $run=mysqli_query($con,$query);
             <td><?php echo $res['Subject']; ?></td>
             <td><?php echo $res['Technologies']; ?></td>
             <td><?php echo $res['Developer']; ?></td>
-            <td><a href="edit.php?id=<?php echo $res['ID']; ?>">EDIT</a> / <a href="delete.php">DELETE</a></td>
+            <td><a href="edit.php?id=<?php echo $res['ID']; ?>">EDIT</a> / <a href="delete.php?id=<?php echo $res['ID']; ?>">DELETE</a></td>
         </tr>
             <?php }
             ?>

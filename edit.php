@@ -56,9 +56,12 @@ if(isset($fname) && $fname !="" && isset($lname) && $lname !="" && isset($compan
 
             $run=mysqli_query($con,$query);
             if($run)
-            {
-                $success="Updated Successfully!";
-            }
+            {?>
+                <script>
+                    alert('Updated Successfully!');
+                    window.location = "view.php";
+                </script>
+           <?php }
             else
             {
                 die("Something is wrong with ".mysqli_error($con));
@@ -211,6 +214,7 @@ else{
                         </div>
                         <div>
                             <button class="btn btn--radius-2 btn--red" type="submit" name="update">Update</button>
+                            <button class="btn btn--radius-2 btn--red"><a href="view.php">View</a></button>
                         </div>
                         <div class="success">
                                 <?php
