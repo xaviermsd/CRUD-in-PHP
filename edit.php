@@ -1,76 +1,72 @@
 <?php
 
 //Declare Variables for field values and error messages
-$fname=$lname=$company=$email=$phone=$subject=$technologies=$developer=$success=$error="";
+$fname = $lname = $company = $email = $phone = $subject = $technologies = $developer = $success = $error = "";
 $nameErr = $emailErr = "";
-$db_name='php_practice';
-$host='localhost';
-$user="root";
-$password="";
-$con=mysqli_connect($host,$user,$password,$db_name);
+$db_name = 'php_practice';
+$host = 'localhost';
+$user = "root";
+$password = "";
+$con = mysqli_connect($host, $user, $password, $db_name);
 
-$id=$_GET['id'];
-$showQuery="SELECT * FROM `regi_form` WHERE `ID`='$id'";
-$showData=mysqli_query($con,$showQuery);
-$arrayData=mysqli_fetch_array($showData);
+$id = $_GET['id'];
+$showQuery = "SELECT * FROM `regi_form` WHERE `ID`='$id'";
+$showData = mysqli_query($con, $showQuery);
+$arrayData = mysqli_fetch_array($showData);
 
 
 
-if(isset($_POST['update'])){
+if (isset($_POST['update'])) {
 
-//Functions Save From SQL Injection, Harmful Code or Invalid Data 
-function clean_input($fields){
-    $fields=trim($fields); //Cleans White Spaces
-    $fields=stripslashes($fields); //Quoated Strins to HTML
-    $fields=htmlspecialchars($fields); //Charaters to HTML
-    return $fields;
-}
-    $idUpdate=$_GET['id'];
-    $fname= clean_input($_POST['first_name']);
-    $lname=clean_input($_POST['last_name']);
-    $company=clean_input($_POST['company']);
-    $email=clean_input($_POST['email']);
-    $phone=clean_input($_POST['phone_number']);
-    $subject=clean_input($_POST['subject']);
-    $developer=clean_input($_POST['exist']);
-    $technologies=$_POST['technologies'];
-    $tech="";
-    foreach ($technologies as $tech1){
-        //$tech.=$tech2.',';
-        $tech=$tech.$tech1.',';
+    //Functions Save From SQL Injection, Harmful Code or Invalid Data 
+    function clean_input($fields)
+    {
+        $fields = trim($fields); //Cleans White Spaces
+        $fields = stripslashes($fields); //Quoated Strins to HTML
+        $fields = htmlspecialchars($fields); //Charaters to HTML
+        return $fields;
     }
-    
-if(isset($fname) && $fname !="" && isset($lname) && $lname !="" && isset($company) && $company !="" && isset($email) && $email !="" && isset($phone) && $phone != "" && isset($subject) && $subject != "" && isset($developer) && $developer != ""){
-            // Check if field contains only letters and white spaces
-            if(!preg_match("/^[a-zA-Z ]*$/",$fname)) {
-                $nameErr = "Only letters and white spaces are allowed";
-            }
-    
-            // Check valid email ID with built-in function
-            elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $emailErr = "Enter a valid Email ID";
-            }
-            else{
-            //$query="INSERT INTO `regi_form` (`First Name`, `Last Name`, `Company`, `Email`, `Phone`, `Subject`, `Technologies`,`Developer`) VALUES ('$fname', '$lname', '$company', '$email', '$phone', '$subject','$tech','$developer');";  
-            $query="UPDATE `regi_form` SET `First Name`='$fname',`Last Name`='$lname',`Company`='$company',`Email`='$email',`Phone`='$phone',`Subject`='$subject',`Technologies`='$tech',`Developer`='$developer' WHERE `ID`='$idUpdate'";  
+    $idUpdate = $_GET['id'];
+    $fname = clean_input($_POST['first_name']);
+    $lname = clean_input($_POST['last_name']);
+    $company = clean_input($_POST['company']);
+    $email = clean_input($_POST['email']);
+    $phone = clean_input($_POST['phone_number']);
+    $subject = clean_input($_POST['subject']);
+    $developer = clean_input($_POST['exist']);
+    $technologies = $_POST['technologies'];
+    $tech = "";
+    foreach ($technologies as $tech1) {
+        //$tech.=$tech2.',';
+        $tech = $tech . $tech1 . ',';
+    }
 
-            $run=mysqli_query($con,$query);
-            if($run)
-            {?>
+    if (isset($fname) && $fname != "" && isset($lname) && $lname != "" && isset($company) && $company != "" && isset($email) && $email != "" && isset($phone) && $phone != "" && isset($subject) && $subject != "" && isset($developer) && $developer != "") {
+        // Check if field contains only letters and white spaces
+        if (!preg_match("/^[a-zA-Z ]*$/", $fname)) {
+            $nameErr = "Only letters and white spaces are allowed";
+        }
+
+        // Check valid email ID with built-in function
+        elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $emailErr = "Enter a valid Email ID";
+        } else {
+            //$query="INSERT INTO `regi_form` (`First Name`, `Last Name`, `Company`, `Email`, `Phone`, `Subject`, `Technologies`,`Developer`) VALUES ('$fname', '$lname', '$company', '$email', '$phone', '$subject','$tech','$developer');";  
+            $query = "UPDATE `regi_form` SET `First Name`='$fname',`Last Name`='$lname',`Company`='$company',`Email`='$email',`Phone`='$phone',`Subject`='$subject',`Technologies`='$tech',`Developer`='$developer' WHERE `ID`='$idUpdate'";
+
+            $run = mysqli_query($con, $query);
+            if ($run) { ?>
                 <script>
                     alert('Updated Successfully!');
                     window.location = "view.php";
                 </script>
-           <?php }
-            else
-            {
-                die("Something is wrong with ".mysqli_error($con));
+<?php } else {
+                die("Something is wrong with " . mysqli_error($con));
             }
         }
-}
-else{
-    $error="You must fill all the feilds!";
-}
+    } else {
+        $error = "You must fill all the feilds!";
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -116,16 +112,16 @@ else{
                                 <div class="row row-space">
                                     <div class="col-2">
                                         <div class="input-group-desc">
-                                            <input class="input--style-5" type="text" name="first_name" value="<?php echo $arrayData['First Name'];?> ">
+                                            <input class="input--style-5" type="text" name="first_name" value="<?php echo $arrayData['First Name']; ?> ">
                                             <label class="label--desc">first name</label>
-                                            <label class="label--error"><?php echo $nameErr;?></label>
+                                            <label class="label--error"><?php echo $nameErr; ?></label>
                                         </div>
                                     </div>
                                     <div class="col-2">
                                         <div class="input-group-desc">
-                                            <input class="input--style-5" type="text" name="last_name" value="<?php echo $arrayData['Last Name'];?>">
+                                            <input class="input--style-5" type="text" name="last_name" value="<?php echo $arrayData['Last Name']; ?>">
                                             <label class="label--desc">last name</label>
-                                            <label class="label--error"><?php echo $nameErr;?></label>
+                                            <label class="label--error"><?php echo $nameErr; ?></label>
                                         </div>
                                     </div>
                                 </div>
@@ -135,7 +131,7 @@ else{
                             <div class="name">Company</div>
                             <div class="value">
                                 <div class="input-group">
-                                    <input class="input--style-5" type="text" name="company" value="<?php echo $arrayData['Company'];?>">
+                                    <input class="input--style-5" type="text" name="company" value="<?php echo $arrayData['Company']; ?>">
                                 </div>
                             </div>
                         </div>
@@ -143,8 +139,8 @@ else{
                             <div class="name">Email</div>
                             <div class="value">
                                 <div class="input-group">
-                                    <input class="input--style-5" type="email" name="email" value="<?php echo $arrayData['Email'];?>">
-                                    <label class="label--error"><?php echo $emailErr;?></label>
+                                    <input class="input--style-5" type="email" name="email" value="<?php echo $arrayData['Email']; ?>">
+                                    <label class="label--error"><?php echo $emailErr; ?></label>
                                 </div>
                             </div>
                         </div>
@@ -154,7 +150,7 @@ else{
                                 <div class="row row-refine">
                                     <div class="col-9">
                                         <div class="input-group-desc">
-                                              <input class="input--style-5" type="text" name="phone_number" value="<?php echo $arrayData['Phone'];?>">
+                                            <input class="input--style-5" type="text" name="phone_number" value="<?php echo $arrayData['Phone']; ?>">
                                             <label class="label--desc">Phone Number</label>
                                         </div>
                                     </div>
@@ -168,9 +164,15 @@ else{
                                     <div class="rs-select2 js-select-simple select--no-search">
                                         <select name="subject">
                                             <option disabled="disabled" selected="">Choose option</option>
-                                            <option <?php if($arrayData['Subject']=="Subject 1"){echo "selected";}?> selected="selected" value="Subject 1">Subject 1</option>
-                                            <option <?php if($arrayData['Subject']=="Subject 2"){echo "selected";}?> value="Subject 2">Subject 2</option>
-                                            <option <?php if($arrayData['Subject']=="Subject 3"){echo "selected";}?> value="Subject 3">Subject 3</option>
+                                            <option <?php if ($arrayData['Subject'] == "Subject 1") {
+                                                        echo "selected";
+                                                    } ?> selected="selected" value="Subject 1">Subject 1</option>
+                                            <option <?php if ($arrayData['Subject'] == "Subject 2") {
+                                                        echo "selected";
+                                                    } ?> value="Subject 2">Subject 2</option>
+                                            <option <?php if ($arrayData['Subject'] == "Subject 3") {
+                                                        echo "selected";
+                                                    } ?> value="Subject 3">Subject 3</option>
                                         </select>
                                         <div class="select-dropdown"></div>
                                     </div>
@@ -181,21 +183,31 @@ else{
                             <div class="name">Which Technologies do you like to learn?</div>
                             <div class="value">
                                 <div class="input-group">
-                                <?php 
-					            $chkbox=$arrayData['Technologies'];
-					            $tech=explode(",",$chkbox);
-					
-					            ?>
-                                <input <?php if(in_array("MEAN",$tech)){echo "checked";}?> type="checkbox" name="technologies[]" value="MEAN">
-                                <label for="mean">Mean Stack Developer</label>
-                                <input <?php if(in_array("MERN",$tech)){echo "checked";}?> type="checkbox" name="technologies[]" value="MERN">
-                                <label for="mern">Mern Stack Developer</label>
-                                <input <?php if(in_array("FULL STACK DEVELOPER",$tech)){echo "checked";}?> type="checkbox" name="technologies[]" value="FULL STACK DEVELOPER">
-                                <label for="full_stack">Full Stack Developer</label>
-                                <input <?php if(in_array("WORDPRESS",$tech)){echo "checked";}?> type="checkbox" name="technologies[]" value="WORDPRESS">
-                                <label for="wordpress">WordPress</label>
-                                <input <?php if(in_array("UX/UI",$tech)){echo "checked";}?> type="checkbox" name="technologies[]" value="UX/UI">
-                                <label for="ux/ui">UX/UI</label>
+                                    <?php
+                                    $chkbox = $arrayData['Technologies'];
+                                    $tech = explode(",", $chkbox);
+
+                                    ?>
+                                    <input <?php if (in_array("MEAN", $tech)) {
+                                                echo "checked";
+                                            } ?> type="checkbox" name="technologies[]" value="MEAN">
+                                    <label for="mean">Mean Stack Developer</label>
+                                    <input <?php if (in_array("MERN", $tech)) {
+                                                echo "checked";
+                                            } ?> type="checkbox" name="technologies[]" value="MERN">
+                                    <label for="mern">Mern Stack Developer</label>
+                                    <input <?php if (in_array("FULL STACK DEVELOPER", $tech)) {
+                                                echo "checked";
+                                            } ?> type="checkbox" name="technologies[]" value="FULL STACK DEVELOPER">
+                                    <label for="full_stack">Full Stack Developer</label>
+                                    <input <?php if (in_array("WORDPRESS", $tech)) {
+                                                echo "checked";
+                                            } ?> type="checkbox" name="technologies[]" value="WORDPRESS">
+                                    <label for="wordpress">WordPress</label>
+                                    <input <?php if (in_array("UX/UI", $tech)) {
+                                                echo "checked";
+                                            } ?> type="checkbox" name="technologies[]" value="UX/UI">
+                                    <label for="ux/ui">UX/UI</label>
                                 </div>
                             </div>
                         </div>
@@ -203,11 +215,15 @@ else{
                             <label class="label label--block">Are you an existing Developer?</label>
                             <div class="p-t-15">
                                 <label class="radio-container m-r-55">Yes
-                                    <input type="radio" checked="checked" name="exist" value="Yes" <?php if($arrayData['Developer']=="Yes"){ echo "checked";}?>>
+                                    <input type="radio" checked="checked" name="exist" value="Yes" <?php if ($arrayData['Developer'] == "Yes") {
+                                                                                                        echo "checked";
+                                                                                                    } ?>>
                                     <span class="checkmark"></span>
                                 </label>
                                 <label class="radio-container">No
-                                    <input type="radio" name="exist" value="No" <?php if($arrayData['Developer']=="No"){ echo "checked";}?>>
+                                    <input type="radio" name="exist" value="No" <?php if ($arrayData['Developer'] == "No") {
+                                                                                    echo "checked";
+                                                                                } ?>>
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
@@ -217,18 +233,18 @@ else{
                             <button class="btn btn--radius-2 btn--red"><a href="view.php">View</a></button>
                         </div>
                         <div class="success">
-                                <?php
-                                if($success){
-                                    echo '<span style="display:block;">'.$success.'</span>';
-                                } 
-                                ?>
+                            <?php
+                            if ($success) {
+                                echo '<span style="display:block;">' . $success . '</span>';
+                            }
+                            ?>
                         </div>
                         <div class="error">
-                        <?php
-                                if($error){
-                                    echo '<span style="display:block;">'.$error.'</span>';
-                                } 
-                                ?>
+                            <?php
+                            if ($error) {
+                                echo '<span style="display:block;">' . $error . '</span>';
+                            }
+                            ?>
                         </div>
                     </form>
                 </div>
