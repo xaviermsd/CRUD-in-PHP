@@ -23,6 +23,7 @@ $run = mysqli_query($con, $query);
                 <th>Subject</th>
                 <th>Technologies</th>
                 <th>Developers</th>
+                <th>Image</th>
                 <th>Edit/Delete</th>
             </tr>
         </thead>
@@ -39,6 +40,7 @@ $run = mysqli_query($con, $query);
                     <td><?php echo $res['Phone']; ?></td>
                     <td><?php echo $res['Subject']; ?></td>
                     <td><?php echo $res['Technologies']; ?></td>
+                    <td><img src="<?php echo $res['Image']; ?>" style="width:100px;height:100px"</td>
                     <td><?php echo $res['Developer']; ?></td>
                     <td><a href="edit.php?id=<?php echo $res['ID']; ?>">EDIT</a> / <a href="delete.php?id=<?php echo $res['ID']; ?>">DELETE</a></td>
                 </tr>

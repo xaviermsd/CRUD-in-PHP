@@ -29,6 +29,12 @@ if (isset($_POST['submit']) && $_SERVER["REQUEST_METHOD"] == "POST") {
     $technologies = $_POST['technologies'];
     $developer = clean_input($_POST['exist']);
     $tech = "";
+    $image=$_FILES['your_image'];
+    $filename=$image['name'];
+    $filepath=$image['tmp_name'];
+    $filerror=$image['error'];
+    $destinationFile='uploads/'.$filename;
+    move_uploaded_file($filepath,$destinationFile);
     foreach ($technologies as $tech1) {
         //$tech.=$tech2.',';
         $tech = $tech . $tech1 . ',';
@@ -44,7 +50,7 @@ if (isset($_POST['submit']) && $_SERVER["REQUEST_METHOD"] == "POST") {
         elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $emailErr = "Enter a valid Email ID";
         } else {
-            $query = "INSERT INTO `regi_form` (`First Name`, `Last Name`, `Company`, `Email`, `Phone`, `Subject`, `Technologies`,`Developer`) VALUES ('$fname', '$lname', '$company', '$email', '$phone', '$subject','$tech','$developer');";
+            $query = "INSERT INTO `regi_form` (`First Name`, `Last Name`, `Company`, `Email`, `Phone`, `Subject`, `Technologies`,`Developer`,`Image`) VALUES ('$fname', '$lname', '$company', '$email', '$phone', '$subject','$tech','$developer','$destinationFile');";
             $run = mysqli_query($con, $query);
             if ($run) {
                 $success = "Registered Successfully!";
@@ -93,7 +99,7 @@ if (isset($_POST['submit']) && $_SERVER["REQUEST_METHOD"] == "POST") {
                     <h2 class="title">Technologies Registration Form</h2>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+                    <form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" enctype="multipart/form-data">
                         <div class="form-row m-b-55">
                             <div class="name">Name</div>
                             <div class="value">
@@ -189,6 +195,12 @@ if (isset($_POST['submit']) && $_SERVER["REQUEST_METHOD"] == "POST") {
                                     <input type="radio" name="exist" value="No">
                                     <span class="checkmark"></span>
                                 </label>
+                            </div>
+                        </div>
+                        <div class="form-row p-t-20">
+                            <label class="label label--block">Upload your Image:</label>
+                            <div class="p-t-15">
+                                    <input type="file" name="your_image" value="image_data">
                             </div>
                         </div>
                         <div>
